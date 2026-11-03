@@ -28,6 +28,10 @@ services:
           ignore:
             - node_modules/
             - db/migrations/
+        # Validation rules used by both the form and the server.
+        - action: sync
+          path: ./shared
+          target: /app/shared
         # Restarting applies new migrations on startup.
         - action: sync+restart
           path: ./server/db/migrations

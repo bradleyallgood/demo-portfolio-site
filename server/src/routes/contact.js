@@ -1,33 +1,22 @@
 import { Router } from 'express';
+import { MIN_FILL_MS, validateContact } from '../../../shared/contact.mjs';
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const clean = (value) => (typeof value === 'string' ? value.trim() : '');
-
-export function validateContact(body) {
-  const name = clean(body.name).replace(/\s+/g, ' ');
-  const email = clean(body.email);
-  const company = clean(body.company).replace(/\s+/g, ' ');
-  const message = clean(body.message);
-
-  const errors = {};
-  if (!name || name.length > 100) errors.name = 'Please enter your name.';
-  if (!EMAIL.test(email) || email.length > 254) errors.email = 'Please enter a valid email address.';
-  if (company.length > 100) errors.company = 'Please shorten the company name.';
-  if (message.length < 10) errors.message = 'Please write a little more.';
-  if (message.length > 5000) errors.message = 'Please keep your message under 5,000 characters.';
-
-  return { values: { name, email, company: company || null, message }, errors };
-}
+const looksLikeBot = (body) =>
+  // The honeypot field is hidden from people, so anything in it came from a bot.
+  (typeof body.website === 'string' && body.website.trim() !== '') ||
+  // The form reports how long it was open. Bots post directly or submit instantly.
+  !(Number.isFinite(body.elapsedMs) && body.elapsedMs >= MIN_FILL_MS);
 
 export function contactRouter({ db, notify, limiter }) {
   const router = Router();
 
   router.post('/', limiter, async (req, res) => {
-    // Hidden from people, so anything in it came from a bot. Report success so it moves on.
-    if (clean(req.body?.website)) return res.status(201).json({ ok: true });
+    const body = req.body ?? {};
 
-    const { values, errors } = validateContact(req.body ?? {});
+    // Report success so the bot moves on instead of retrying.
+    if (looksLikeBot(body)) return res.status(201).json({ ok: true });
+
+    const { values, errors } = validateContact(body);
     if (Object.keys(errors).length > 0) return res.status(400).json({ errors });
 
     await db.query(

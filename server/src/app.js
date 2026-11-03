@@ -20,6 +20,8 @@ export function createApp({ db, notify, contactLimit = 5 }) {
   const limiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     limit: contactLimit,
+    // Only sends count, so someone fixing a typo isn't locked out.
+    skipFailedRequests: true,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     message: { error: 'Too many messages. Please try again later.' },

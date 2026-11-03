@@ -6,7 +6,7 @@ import { createApp } from '../src/app.js';
 import { pool } from '../src/db.js';
 
 const TEST_EMAIL = 'visitor@test.invalid';
-const valid = { name: 'Ada', email: TEST_EMAIL, message: 'Hello, I would like to talk.' };
+const valid = { name: 'Ada', email: TEST_EMAIL, message: 'Hello, I would like to talk.', elapsedMs: 5000 };
 
 let server;
 let base;
@@ -88,7 +88,7 @@ test('a valid contact message is saved and triggers a notification', async () =>
 });
 
 test('invalid fields return per-field errors and save nothing', async () => {
-  const res = await post({ name: '', email: 'nope', message: 'short' });
+  const res = await post({ name: '', email: 'nope', message: 'short', elapsedMs: 5000 });
   const body = await res.json();
 
   assert.equal(res.status, 400);
@@ -102,6 +102,22 @@ test('a filled honeypot looks successful but saves nothing', async () => {
   assert.equal(res.status, 201);
   assert.equal(await savedCount(), 0);
   assert.equal(notified.length, 0);
+});
+
+test('a submission faster than a person could type looks successful but saves nothing', async () => {
+  const res = await post({ ...valid, elapsedMs: 500 });
+
+  assert.equal(res.status, 201);
+  assert.equal(await savedCount(), 0);
+  assert.equal(notified.length, 0);
+});
+
+test('a submission without the form timing looks successful but saves nothing', async () => {
+  const { elapsedMs, ...direct } = valid;
+  const res = await post(direct);
+
+  assert.equal(res.status, 201);
+  assert.equal(await savedCount(), 0);
 });
 
 test('a failing notification does not fail the request', async () => {
@@ -145,6 +161,30 @@ test('the contact endpoint is rate limited', async () => {
 
   assert.equal(first.status, 201);
   assert.equal(second.status, 429);
+});
+
+test('rejected submissions do not use up the rate limit', async () => {
+  const app = createApp({ db: pool, notify: async () => {}, contactLimit: 1 });
+  const local = await new Promise((resolve) => {
+    const s = app.listen(0, () => resolve(s));
+  });
+  const url = `http://localhost:${local.address().port}/api/contact`;
+  const send = (body) =>
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+  const typo1 = await send({ ...valid, email: 'ada@' });
+  const typo2 = await send({ ...valid, email: 'ada@example' });
+  const fixed = await send(valid);
+  local.close();
+
+  assert.equal(typo1.status, 400);
+  assert.equal(typo2.status, 400);
+  assert.equal(fixed.status, 201);
+  assert.equal(await savedCount(), 1);
 });
 
 test('malformed JSON returns 400 rather than 500', async () => {

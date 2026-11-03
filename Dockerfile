@@ -23,6 +23,7 @@ FROM base AS production
 ENV NODE_ENV=production
 RUN npm ci --omit=dev
 COPY --chown=node:node server server
+COPY --chown=node:node shared shared
 COPY --chown=node:node --from=build /app/client/dist client/dist
 EXPOSE 3001
 CMD ["sh", "-c", "npm run db:migrate && npm run db:seed && npm start"]

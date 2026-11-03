@@ -763,6 +763,12 @@ textarea {
   border-color: var(--error);
 }
 
+.field-hint {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .field-error {
   margin: 0.3rem 0 0.75rem;
   color: var(--error);
@@ -776,6 +782,11 @@ textarea {
   border-radius: 1rem;
   background: var(--field);
   font-size: 1.25rem;
+}
+
+/* Focused by script after sending so keyboard users stay in place. It isn't interactive. */
+.form-success:focus {
+  outline: none;
 }
 
 /* Visually removed but still in the DOM for bots to fill in. */
