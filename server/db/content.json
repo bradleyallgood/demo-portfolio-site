@@ -1,0 +1,137 @@
+{
+  "profile": {
+    "name": "Alex Sample",
+    "headline": "[What you do, in one bold line]",
+    "intro": "[One or two friendly sentences for the home page: what you care about and what you like to build.]",
+    "location": "[City, State]",
+    "about": "[First paragraph: who you are, in your own voice.]\n\n[Second paragraph: how you got here and what you're looking for next. Leave a blank line between paragraphs.]",
+    "petsAbout": "[A few sentences about your pets.]",
+    "photoUrl": "/images/portrait.svg",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/your-handle"
+      },
+      {
+        "label": "GitHub",
+        "url": "https://github.com/your-handle"
+      }
+    ]
+  },
+  "hobbies": [
+    {
+      "title": "[Hobby]",
+      "description": "[A sentence or two about this hobby.]",
+      "imageUrl": "/images/hobby-1.svg",
+      "alt": "[Describe the photo for people who cannot see it.]"
+    },
+    {
+      "title": "[Hobby]",
+      "description": "[A sentence or two about this hobby.]",
+      "imageUrl": "/images/hobby-2.svg",
+      "alt": "[Describe the photo for people who cannot see it.]"
+    }
+  ],
+  "pets": [
+    {
+      "imageUrl": "/images/pets/pet-1.svg",
+      "alt": "[Describe the photo for people who cannot see it.]",
+      "caption": "[Pet name]"
+    },
+    {
+      "imageUrl": "/images/pets/pet-2.svg",
+      "alt": "[Describe the photo for people who cannot see it.]",
+      "caption": "[Pet name]"
+    },
+    {
+      "imageUrl": "/images/pets/pet-3.svg",
+      "alt": "[Describe the photo for people who cannot see it.]",
+      "caption": "[Pet name]"
+    }
+  ],
+  "skills": [
+    {
+      "category": "[Skill group one]",
+      "items": [
+        "[Skill]",
+        "[Skill]",
+        "[Skill]",
+        "[Skill]"
+      ]
+    },
+    {
+      "category": "[Skill group two]",
+      "items": [
+        "[Skill]",
+        "[Skill]",
+        "[Skill]"
+      ]
+    },
+    {
+      "category": "[Skill group three]",
+      "items": [
+        "[Skill]",
+        "[Skill]",
+        "[Skill]"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "[Project name]",
+      "tagline": "[What it does, in one line.]",
+      "description": "[A few sentences: why you built it, what was hard, and what you learned.]",
+      "tech": [
+        "[Tool]",
+        "[Tool]",
+        "[Tool]"
+      ],
+      "liveUrl": "https://example.com",
+      "repoUrl": "https://github.com/your-handle/project",
+      "imageUrl": null,
+      "featured": true
+    },
+    {
+      "title": "[Project name]",
+      "tagline": "[What it does, in one line.]",
+      "description": "[A few sentences: why you built it, what was hard, and what you learned.]",
+      "tech": [
+        "[Tool]",
+        "[Tool]",
+        "[Tool]"
+      ],
+      "liveUrl": null,
+      "repoUrl": "https://github.com/your-handle/project",
+      "imageUrl": null,
+      "featured": true
+    },
+    {
+      "title": "[Project name]",
+      "tagline": "[What it does, in one line.]",
+      "description": "[A few sentences: why you built it, what was hard, and what you learned.]",
+      "tech": [
+        "[Tool]",
+        "[Tool]",
+        "[Tool]"
+      ],
+      "liveUrl": "https://example.com",
+      "repoUrl": null,
+      "imageUrl": null,
+      "featured": true
+    },
+    {
+      "title": "[Project name]",
+      "tagline": "[What it does, in one line.]",
+      "description": "[A few sentences: why you built it, what was hard, and what you learned.]",
+      "tech": [
+        "[Tool]",
+        "[Tool]",
+        "[Tool]"
+      ],
+      "liveUrl": null,
+      "repoUrl": "https://github.com/your-handle/project",
+      "imageUrl": null,
+      "featured": false
+    }
+  ]
+}

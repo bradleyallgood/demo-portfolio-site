@@ -1,0 +1,27 @@
+{
+  "name": "personal-portfolio-site",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/start.mjs",
+    "dev:app": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm start -w server",
+    "test": "npm test -w server",
+    "signing": "node scripts/setup-signing.mjs",
+    "db:up": "docker compose up -d --wait db",
+    "db:down": "docker compose down",
+    "db:migrate": "npm run migrate -w server",
+    "db:seed": "npm run seed -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
