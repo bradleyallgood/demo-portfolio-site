@@ -1,12 +1,19 @@
 // Replaces all site content with content.json. Contact messages are never touched.
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { pool } from '../src/db.js';
+import { ContentError, loadContent } from './content.js';
 
-const content = JSON.parse(
-  await fs.readFile(path.join(import.meta.dirname, 'content.json'), 'utf8'),
-);
+let content;
+let warnings;
+try {
+  ({ content, warnings } = loadContent());
+} catch (err) {
+  if (!(err instanceof ContentError)) throw err;
+  console.error(`\n${err.message}\n${err.problems.map((p) => `  - ${p}`).join('\n')}\n`);
+  console.error('Nothing was changed. Fix the file and save it again.\n');
+  process.exit(1);
+}
+for (const warning of warnings) console.warn(`Warning: ${warning}`);
 
+const { pool } = await import('../src/db.js');
 const client = await pool.connect();
 try {
   await client.query('BEGIN');

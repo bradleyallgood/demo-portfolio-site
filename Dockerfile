@@ -13,7 +13,8 @@ RUN npm ci
 FROM deps AS dev
 COPY --chown=node:node . .
 EXPOSE 5173
-CMD ["sh", "-c", "npm run db:migrate && npm run db:seed && npm run dev:app"]
+# A mistake in content.json is reported but doesn't stop the site. Saving the fixed file loads it.
+CMD ["sh", "-c", "npm run db:migrate && { npm run db:seed || true; } && npm run dev:app"]
 
 FROM deps AS build
 COPY --chown=node:node . .
